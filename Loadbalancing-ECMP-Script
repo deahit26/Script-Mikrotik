@@ -1,0 +1,16 @@
+/ip firewall nat
+add chain=srcnat out-interface="ether1" action=masquerade comment="ISP1"
+add chain=srcnat out-interface="ether2" action=masquerade comment="ISP2"
+add chain=srcnat out-interface="ether3" action=masquerade comment="ISP3"
+/ip route
+add check-gateway=ping distance=1 gateway="192.168.100.1,192.168.200.1,192.168.300.1,,," comment="MY-ISP"
+add check-gateway=ping distance=1 gateway="192.168.100.1" routing-mark="to-ether1" comment="ISP1"
+add check-gateway=ping distance=1 gateway="192.168.200.1" routing-mark="to-ether2" comment="ISP2"
+add check-gateway=ping distance=1 gateway="192.168.300.1" routing-mark="to-ether3" comment="ISP3"
+/ip firewall mangle
+add action=mark-connection chain=input in-interface="ether1" new-connection-mark="cm-ether1" passthrough=yes comment="ISP1"
+add action=mark-connection chain=input in-interface="ether2" new-connection-mark="cm-ether2" passthrough=yes comment="ISP2"
+add action=mark-connection chain=input in-interface="ether3" new-connection-mark="cm-ether3" passthrough=yes comment="ISP3"
+add action=mark-routing chain=output connection-mark="cm-ether1" new-routing-mark="to-ether1" passthrough=yes comment="ISP1"
+add action=mark-routing chain=output connection-mark="cm-ether2" new-routing-mark="to-ether2" passthrough=yes comment="ISP2"
+add action=mark-routing chain=output connection-mark="cm-ether3" new-routing-mark="to-ether3" passthrough=yes comment="ISP3"
