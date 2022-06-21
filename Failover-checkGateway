@@ -1,0 +1,4 @@
+/ip route
+add dst-address="0.0.0.0/0" target-scope="10" distance="1" gateway="192.168.100.1" comment="ISP-1" check-gateway="ping" scope="30"
+add dst-address="0.0.0.0/0" target-scope="10" distance="2" gateway="192.168.200.1" comment="ISP-2" check-gateway="ping" scope="30"
+add dst-address="0.0.0.0/0" target-scope="10" distance="3" gateway="192.168.300.1" comment="ISP-3" check-gateway="ping" scope="30"
